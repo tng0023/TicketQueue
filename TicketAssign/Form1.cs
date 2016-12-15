@@ -58,20 +58,18 @@ namespace TicketAssign
 
         private void btn_options_Click(object sender, EventArgs e) //options button to clear all entries and enter new options
         {
+
             DialogResult result = MessageBox.Show("Are you sure you want to restart?\n"
-             ,"Restart?", MessageBoxButtons.YesNo);
+             ,"Restart", MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
             {
                 lst_nextTicket.Items.Clear();
                 label3.Text = ticketNumber.ToString();
-                lbl_available.Text = " ";
-                Options options = new Options();
+                lbl_available.Text = "";
+                options = new Options();
                 options.ShowDialog();
-                timer.Enabled = true;
-                timer.Start();
-                InitializeTimeSlots();
+                ResetOptions();
             }
-
         }
 
         private void InitializeTimeSlots() //initialize time slots for what is entered into options
@@ -176,6 +174,18 @@ namespace TicketAssign
                 }
                 lbl_guestsAvail.Text = ticketsReadyToEnterString;
             }
+        }
+        /// <summary>
+        /// method to reset options input
+        /// </summary>
+        private void ResetOptions()
+        {
+            TimeSlots = new Queue<TimeSlot>();
+            Tickets = new Queue<Ticket>();
+            timer.Enabled = true;
+            timer.Start();
+            InitializeTimeSlots();
+            UpdateNextAvailableEntry();
         }
     }
 }
